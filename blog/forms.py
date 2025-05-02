@@ -1,9 +1,7 @@
-from django.forms import forms
+from django import forms
 from .models import Blog
 
 class BlogForm(forms.ModelForm):
-    model =Blog
-    fields = ['title', 'content']
-
-    
-    
+    class Meta:
+        model = Blog
+        fields = ['title', 'content']

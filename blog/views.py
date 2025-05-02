@@ -7,23 +7,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Blog, Comment
 from .forms import BlogForm
 
-# Blog List View
 class BlogListView(View):
-    template_name = 'blog/home.html'
+    template_name = 'templates/home.html'
 
     def get(self, request, *args, **kwargs):
         blogs = Blog.objects.all().order_by('-created_at')
-        return render(request, self.template_name, {'blogs': blogs})
+        return render(request, 'home.html', {'blogs': blogs})
 
-# Blog Create View
 class BlogCreateView(LoginRequiredMixin, View):
-    template_name = 'blog/create_blog.html'
+    template_name = 'templates/create_blog.html'
     form_class = BlogForm
-    success_url = 'home'  # name of your URL pattern
+    success_url = 'home'  
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(request, 'create_blog.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -33,11 +31,10 @@ class BlogCreateView(LoginRequiredMixin, View):
             blog.save()
             messages.success(request, 'Blog created successfully')
             return redirect(self.success_url)
-        return render(request, self.template_name, {'form': form})
+        return render(request, 'create_blog.html', {'form': form})
 
-# Blog Update View
 class BlogUpdateView(LoginRequiredMixin, View):
-    template_name = 'blog/create_blog.html'
+    template_name = 'templates/create_blog.html'
     form_class = BlogForm
     success_url = 'home'
 
@@ -55,7 +52,7 @@ class BlogUpdateView(LoginRequiredMixin, View):
             return redirect(self.success_url)
         return render(request, self.template_name, {'form': form})
 
-# Blog Delete View
+
 class BlogDeleteView(LoginRequiredMixin, View):
     success_url = 'home'
 
@@ -65,10 +62,10 @@ class BlogDeleteView(LoginRequiredMixin, View):
         messages.success(request, 'Blog deleted successfully')
         return redirect(self.success_url)
 
-# Blog Detail View
+
 class BlogDetailView(View):
-    template_name = 'blog/blog_detail.html'
+    template_name = 'tempaltes/blog_detail.html'
 
     def get(self, request, *args, **kwargs):
         blog = get_object_or_404(Blog, pk=kwargs['pk'])
-        return render(request, self.template_name, {'blog': blog})
+        return render(request, 'blog_detail.html', {'blog': blog})

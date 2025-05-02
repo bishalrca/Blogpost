@@ -1,0 +1,38 @@
+__pycache__
+.env
+db.sqlite3
+myenv/
+media/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Django
+*.log
+staticfiles/
+media/
+
+# Env
+.env
+venv/
+env/
+frontend_health/
+
+# Node/Frontend
+node_modules/
+build/
+dist/
+*.lock
+*.DS_Store
+
+# VS Code
+.vscode/
+
+# CKEditor uploads (optional)
+uploads/
+blog/__pycache__/models.cpython-313.pyc
