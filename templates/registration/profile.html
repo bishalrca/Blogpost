@@ -1,11 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container mt-5 text-center">
-    <h2>Hello, {{ request.user.username }} 👋</h2>
-    {% if request.user.profile_picture %}
-        <img src="{{ request.user.profile_picture.url }}" class="rounded-circle my-3" width="150" height="150" alt="Profile Picture">
-    {% endif %}
-    <p>Email: {{ request.user.email }}</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Profile Display Section -->
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    {% if profile.profile_picture %}
+                        <img src="{{ request.user.profile_picture.url }}" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
+                    {% else %}
+                        <img src="{% static 'default-avatar.png' %}" class="rounded-circle mb-3" width="150" height="150" alt="Default Avatar">
+                    {% endif %}
+
+                    <h4>{{ profile.username }}</h4>
+                    <p class="text-muted">{{ profile.email }}</p>
+                    <a href="{% url 'accounts:profile_edit' pk=profile.id %}">Update Profile</a> 
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </div>
 {% endblock %}
-

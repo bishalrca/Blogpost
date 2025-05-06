@@ -5,4 +5,11 @@ class CustomUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
-        return self.username
+        return self.username 
+
+class Profile(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.user.username

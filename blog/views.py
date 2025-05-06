@@ -1,11 +1,12 @@
 # blog/views.py
 
 from django.views import View
+from django.views.generic import CreateView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Blog, Comment
-from .forms import BlogForm
+from .forms import BlogForm, CommentForm
 
 class BlogListView(View):
     template_name = 'templates/home.html'
@@ -17,7 +18,7 @@ class BlogListView(View):
 class BlogCreateView(LoginRequiredMixin, View):
     template_name = 'templates/create_blog.html'
     form_class = BlogForm
-    success_url = 'home'  
+    success_url = 'blog:home'  
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -64,8 +65,23 @@ class BlogDeleteView(LoginRequiredMixin, View):
 
 
 class BlogDetailView(View):
-    template_name = 'tempaltes/blog_detail.html'
+    def get(self,request, *args, **kwargs):
+        blog = get_object_or_404(Blog,id=kwargs['pk'])
+        comment = blog.comments.all()
+        form  = CommentForm()
 
-    def get(self, request, *args, **kwargs):
-        blog = get_object_or_404(Blog, pk=kwargs['pk'])
-        return render(request, 'blog_detail.html', {'blog': blog})
+        return render (request,'blog_detail.html',{'blog':blog, 'comment':comment, 'form':form}) 
+
+
+    def post(self, request, *args, **kwargs):
+        blog = get_object_or_404(Blog,id=kwargs['pk'])
+        
+        form  = CommentForm(request.POST)
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.blog=blog
+            comment.user=request.user
+            comment.save()
+        comment = blog.comments.all()
+        return render (request,'blog_detail.html',{'blog':blog, 'comment':comment, 'form':form}) 
+
