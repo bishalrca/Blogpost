@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Edit Profile</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.username.id_for_label }}">Username</label>
+                            {{ form.username }}
+                            {{ form.username.errors }}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.profile_picture.id_for_label }}">Profile Picture</label><br>
+                            {% if request.user.profile_picture %}
+                                <img src="{{ request.user.profile_picture.url }}" class="rounded mb-2" width="100" height="100" alt="Current Picture"><br>
+                            {% endif %}
+                            {{ form.profile_picture }}
+                            {{ form.profile_picture.errors }}
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Save Changes</button>
+                        <a href="{% url 'accounts:profile' customuser.id %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
