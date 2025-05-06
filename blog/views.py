@@ -77,11 +77,20 @@ class BlogDetailView(View):
         blog = get_object_or_404(Blog,id=kwargs['pk'])
         
         form  = CommentForm(request.POST)
+
+        if not request.user.is_authenticated:
+            messages.warning(request, "You must be logged in to post a comment.")
+            return redirect('accounts:login')
+        
         if form.is_valid():
             comment=form.save(commit=False)
             comment.blog=blog
             comment.user=request.user
             comment.save()
-        comment = blog.comments.all()
+            messages.success(request, "Comment posted successfully.")
+            return redirect('blog:blog_detail', pk=blog.pk)
+        
+        comment = blog.comments.filter(parent__isnull=True)
         return render (request,'blog_detail.html',{'blog':blog, 'comment':comment, 'form':form}) 
+    
 

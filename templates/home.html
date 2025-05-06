@@ -6,7 +6,11 @@
 <div class="container mt-5">
     <div class="text-center mb-5">
         <h2 class="display-5">Hello, {{ request.user.username }} 👋</h2>
+        {%if user.is_authenticated%}
         <p class="lead">Welcome back to your blogging space. Want to share something new today?</p>
+        {%else%}
+        <p class="lead">Welcome to your blogging space. Want to share something new today?</p>
+        {%endif%}
         <a href="{% url 'blog:create_blog' %}" class="btn btn-primary btn-lg mt-2">➕ Create New Blog</a>
     </div>
 
