@@ -4,14 +4,21 @@ from django.views import View
 from .forms import CustomUserCreationForm, ProfileUpdateForm
 from django.contrib.auth import get_user_model
 from .models import CustomUser
+from blog.models import Blog
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth import logout
 from django.contrib import messages
 
 User = get_user_model()
 
+#use this to show context
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['blogs'] = Blog.objects.all().order_by('-created_at')[:1]
+        return context
 
     def get_success_url(self):
         return '/'
@@ -29,22 +36,25 @@ class SignupView(View):
 
     def get(self, request):
         form = CustomUserCreationForm()
-        return render(request, self.template_name, {'form': form})
-
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
+        return render(request, self.template_name, {'form': form, 'blogs': blogs})
+    
     def post(self, request):
         form = CustomUserCreationForm(request.POST, request.FILES)
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
         if form.is_valid():
             form.save()
             return redirect('accounts:login')
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'blogs': blogs})
         
 
 class ProfileView(View):
     template_name = 'registration/profile.html'
 
     def get(self, request, *args,**kwargs):
+        blogs = Blog.objects.all().order_by()[:1]
         profile = get_object_or_404(CustomUser, id=kwargs['pk'])
-        return render(request, self.template_name,{'profile':profile})
+        return render(request, self.template_name,{'profile':profile, 'blogs':blogs})
     
 class ProfileEditView(View):
     template_name = 'registration/profile_edit.html'   

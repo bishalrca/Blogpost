@@ -43,25 +43,7 @@
 
         <!-- Right: Latest blog with enhanced card -->
         <div class="col-md-4">
-            <h4 class="mb-4">🔥 Latest Blog</h4>
-            {% if blogs %}
-                {% with blog=blogs.0 %}
-                    <div class="card bg-light border-0 shadow-lg p-3 mb-5 rounded">
-                        <div class="card-body">
-                            <h4 class="card-title">{{ blog.title }}</h4>
-                            <p class="text-muted">
-                                <i class="bi bi-person-circle"></i> {{ blog.author.username }} <br>
-                                <i class="bi bi-clock"></i> {{ blog.created_at|date:"F d, Y" }}
-                            </p>
-                            <hr>
-                            <p class="card-text">{{ blog.content|truncatewords:40 }}</p>
-                            <a href="{% url 'blog:blog_detail' blog.pk %}" class="btn btn-success btn-sm mt-2">📖 Read Full Blog</a>
-                        </div>
-                    </div>
-                {% endwith %}
-            {% else %}
-                <p>No blog posts yet.</p>
-            {% endif %}
+            {%include 'blog/includes/recent_blog.html'%}
         </div>
     </div>
 </div>

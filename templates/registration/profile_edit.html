@@ -22,19 +22,19 @@
                         {% endif %}
 
                         <div class="form-group mb-3">
-                            <label for="{{ form.username.id_for_label }}">Username</label>
+                            <label for="{{ form.username.id_for_label }}">Username:</label>
                             {{ form.username }}
                             {{ form.username.errors }}
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            <label for="{{ form.email.id_for_label }}">Email:</label>
                             {{ form.email }}
                             {{ form.email.errors }}
                         </div>
 
                         <div class="form-group mb-3">
-                            <label for="{{ form.profile_picture.id_for_label }}">Profile Picture</label><br>
+                            <label for="{{ form.profile_picture.id_for_label }}">Profile Picture:</label><br>
                             {% if request.user.profile_picture %}
                                 <img src="{{ request.user.profile_picture.url }}" class="rounded mb-2" width="100" height="100" alt="Current Picture"><br>
                             {% endif %}

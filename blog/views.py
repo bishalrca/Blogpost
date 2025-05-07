@@ -22,17 +22,19 @@ class BlogCreateView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, 'create_blog.html', {'form': form})
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
+        return render(request, 'create_blog.html', {'form': form, 'blogs':blogs})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
         if form.is_valid():
             blog = form.save(commit=False)
             blog.author = request.user
             blog.save()
             messages.success(request, 'Blog created successfully')
             return redirect(self.success_url)
-        return render(request, 'create_blog.html', {'form': form})
+        return render(request, 'create_blog.html', {'form': form, 'blogs':blogs})
 
 class BlogUpdateView(LoginRequiredMixin, View):
     template_name = 'templates/create_blog.html'
