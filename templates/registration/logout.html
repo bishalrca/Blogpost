@@ -1,12 +1,21 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+</head>
+<body>
+    <h2>Are you sure you want to logout?</h2>
 
-{% block content %}
-<div class="container mt-5 text-center">
-    <div class="card shadow-sm p-4">
-        <h2 class="mb-3">You've been logged out</h2>
-        <p class="mb-4">Thank you for visiting. See you again soon!</p>
-        <a href="{% url 'accounts:login' %}" class="btn btn-primary">Login Again</a>
-        <a href="{% url 'accounts:home' %}" class="btn btn-secondary ms-2">Back to Home</a>
-    </div>
-</div>
-{% endblock %}
+    <form id="logoutForm" method="post">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirmLogout()">Yes, Logout</button>
+        <a href="{% url 'accounts:home' %}">Cancel</a>
+    </form>
+
+    <script>
+        function confirmLogout() {
+            return confirm("Are you sure you want to logout?");
+        }
+    </script>
+</body>
+</html>

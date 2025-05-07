@@ -9,7 +9,7 @@
         {%if user.is_authenticated%}
         <p class="lead">Welcome back to your blogging space. Want to share something new today?</p>
         {%else%}
-        <p class="lead">Welcome to your blogging space. Want to share something new today?</p>
+        <p class="lead">Welcome to blogging space. Want to share something new?</p>
         {%endif%}
         <a href="{% url 'blog:create_blog' %}" class="btn btn-primary btn-lg mt-2">➕ Create New Blog</a>
     </div>

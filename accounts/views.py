@@ -69,5 +69,10 @@ class ProfileEditView(View):
 class LogoutView(View):
     template_name = 'registration/logout.html'
 
+    def get(self,request,*args,**kwargs):
+        print("hello world is fucked ")
+        return render(request, self.template_name)
+
     def post(self,request,*args, **kwargs):
-           pass
+           logout(request)
+           return redirect('accounts:home')

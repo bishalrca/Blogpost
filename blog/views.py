@@ -94,3 +94,9 @@ class BlogDetailView(View):
         return render (request,'blog_detail.html',{'blog':blog, 'comment':comment, 'form':form}) 
     
 
+class AllBlogListView(View):
+    template_name =  "templates/blog_list.html"
+
+    def get(self, request, *args, **kwargs):
+        blog_list = Blog.objects.all().order_by('-created_at')
+        return render(request, 'blog_list.html',{'blog_list':blog_list})   
