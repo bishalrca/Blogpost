@@ -19,10 +19,14 @@
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item"><a class="nav-link" href="{% url 'blog:create_blog' %}">Create Post</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'blog:my_blog' %}">My Blog</a></li>
+
         <li class="nav-item"><a class="nav-link" href="{% url 'blog:all_blog' %}">Blog List</a></li>
 
         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' user.id%}">Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:logout' %}" onclick="return confirmLogout();">Logout</a>
+        </li>
         {% else %}
         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a></li>
@@ -38,3 +42,10 @@
 
 </body>
 </html>
+{% block script %}
+<script>
+function confirmLogout() {
+    return confirm("Are you sure you want to logout?");
+}
+</script>
+{% endblock %}

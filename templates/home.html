@@ -17,7 +17,11 @@
     <div class="row">
         <!-- Left: All blogs except latest -->
         <div class="col-md-8">
-            <h4 class="mb-4">📝 All Blog Posts</h4>
+            <h4 class="mb-4">
+                <a href="{% url 'blog:all_blog' %}" style="text-decoration: none; color: inherit;">
+                    📝 All Blog Posts
+                </a>
+            </h4>
             {% if blogs|length > 1 %}
                 <div class="row">
                     {% for blog in blogs|slice:"1:" %}

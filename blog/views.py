@@ -37,27 +37,29 @@ class BlogCreateView(LoginRequiredMixin, View):
         return render(request, 'create_blog.html', {'form': form, 'blogs':blogs})
 
 class BlogUpdateView(LoginRequiredMixin, View):
-    template_name = 'templates/create_blog.html'
+    template_name = 'templates/blog_update.html'
     form_class = BlogForm
-    success_url = 'home'
+    success_url = 'blog:home'
 
     def get(self, request, *args, **kwargs):
         blog = get_object_or_404(Blog, pk=kwargs['pk'])
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
         form = self.form_class(instance=blog)
-        return render(request, self.template_name, {'form': form})
+        return render(request, 'blog_update.html', {'form': form, 'blogs':blogs})
 
     def post(self, request, *args, **kwargs):
         blog = get_object_or_404(Blog, pk=kwargs['pk'])
+        blogs = Blog.objects.all().order_by('-created_at')[:1]
         form = self.form_class(request.POST, instance=blog)
         if form.is_valid():
             form.save()
             messages.success(request, 'Blog updated successfully')
-            return redirect(self.success_url)
-        return render(request, self.template_name, {'form': form})
+            return redirect('blog:all_blog')
+        return render(request, 'blog_update.html', {'form': form, 'blogs':blogs})
 
 
 class BlogDeleteView(LoginRequiredMixin, View):
-    success_url = 'home'
+    success_url = 'blog:all_blog'
 
     def get(self, request, *args, **kwargs):
         blog = get_object_or_404(Blog, pk=kwargs['pk'])
@@ -101,4 +103,11 @@ class AllBlogListView(View):
 
     def get(self, request, *args, **kwargs):
         blog_list = Blog.objects.all().order_by('-created_at')
-        return render(request, 'blog_list.html',{'blog_list':blog_list})   
+        return render(request, 'blog_list.html',{'blog_list':blog_list}) 
+
+class MyBlogView(View):
+    template_name = "templates/my_blog.html" 
+
+    def get(self,request, *args, **kwargs):
+        blogs = Blog.objects.filter(author=request.user).order_by('-created_at')
+        return render(request, 'my_blog.html',{'blogs':blogs})
