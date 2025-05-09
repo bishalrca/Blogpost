@@ -10,15 +10,18 @@ from .forms import BlogForm, CommentForm
 
 class BlogListView(View):
     template_name = 'templates/home.html'
+    form_class = BlogForm
+
 
     def get(self, request, *args, **kwargs):
+        form = self.form_class()
         blogs = Blog.objects.all().order_by('-created_at')
-        return render(request, 'home.html', {'blogs': blogs})
+        return render(request, 'home.html', {'blogs': blogs, 'form':form})
 
 class BlogCreateView(LoginRequiredMixin, View):
     template_name = 'templates/create_blog.html'
     form_class = BlogForm
-    success_url = 'blog:home'  
+    success_url = 'blog:home'
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -26,7 +29,7 @@ class BlogCreateView(LoginRequiredMixin, View):
         return render(request, 'create_blog.html', {'form': form, 'blogs':blogs})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         blogs = Blog.objects.all().order_by('-created_at')[:1]
         if form.is_valid():
             blog = form.save(commit=False)

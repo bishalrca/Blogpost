@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{%load static%}
 
 {% block title %}Home - My Blog{% endblock %}
 
@@ -24,9 +25,13 @@
             </h4>
             {% if blogs|length > 1 %}
                 <div class="row">
-                    {% for blog in blogs|slice:"1:" %}
+                    {% for blog in blogs %}
                         <div class="col-md-6 mb-4">
                             <div class="card h-100 shadow-sm border-0">
+                                {%if blog.banner%}
+                                <img src="{{ blog.banner.url}}" class="card-img-top" alt="Blog Banner"
+                                 style="height: 200px; object-fit: cover;">
+                                {%endif%}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ blog.title }}</h5>
                                     <p class="card-text text-muted">
@@ -44,7 +49,6 @@
                 <p>No older blog posts found.</p>
             {% endif %}
         </div>
-
         <!-- Right: Latest blog with enhanced card -->
         <div class="col-md-4">
             {%include 'blog/includes/recent_blog.html'%}

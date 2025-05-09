@@ -6,6 +6,7 @@ class Blog(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length = 255)
     content = models.TextField() 
+    banner = models.ImageField(upload_to='blog_banner/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add = True)
 
     def __str__(self):
