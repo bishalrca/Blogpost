@@ -13,6 +13,14 @@
             &nbsp;|&nbsp;
             <i class="bi bi-calendar-event"></i> {{ blog.created_at|date:"F j, Y" }}
         </p>
+        {% if blog.banner %}
+            <div class="mb-4">
+                <img src="{{ blog.banner.url }}" alt="Blog Banner"
+                    class="w-100 rounded shadow"
+                    style="max-height: 400px; object-fit: cover; object-position: center;">
+            </div>
+        {% endif %}
+
     </div>
 
     <!-- Blog Content -->

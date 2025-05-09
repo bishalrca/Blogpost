@@ -25,12 +25,14 @@
             </h4>
             {% if blogs|length > 1 %}
                 <div class="row">
-                    {% for blog in blogs %}
+                    {% for blog in blogs|slice:"1:" %}
                         <div class="col-md-6 mb-4">
                             <div class="card h-100 shadow-sm border-0">
                                 {%if blog.banner%}
-                                <img src="{{ blog.banner.url}}" class="card-img-top" alt="Blog Banner"
-                                 style="height: 200px; object-fit: cover;">
+                                <a href= "{%url 'blog:blog_detail' blog.pk%}">
+                                <img src="{{ blog.banner.url}}" class="card-img-top" alt="Blog Banner" style="height: 200px; object-fit: cover;">
+                                </a>
+                                 
                                 {%endif%}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ blog.title }}</h5>
