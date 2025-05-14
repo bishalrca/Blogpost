@@ -20,7 +20,6 @@
                     style="max-height: 400px; object-fit: cover; object-position: center;">
             </div>
         {% endif %}
-
     </div>
 
     <!-- Blog Content -->
@@ -34,22 +33,45 @@
         {% if blog.comments.all %}
             <ul class="list-group shadow-sm">
                 {% for comment in blog.comments.all %}
-                <li class="list-group-item mb-3 rounded">
-                    <div class="d-flex">
-                        <div class="me-3">
-                            {% if comment.user.profile_picture %}
-                                <img src="{{ comment.user.profile_picture.url }}" alt="Profile" class="rounded-circle" width="35" height="35">
-                            {% else %}
-                                <img src="{% static 'images/360_F_724597608_pmo5BsVumFcFyHJKlASG2Y2KpkkfiYUU.jpg' %}" alt="Avatar" class="rounded-circle" width="35" height="35">
-                            {% endif %}
+                    <li class="list-group-item mb-3 rounded">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                {% if comment.user.profile_picture %}
+                                    <img src="{{ comment.user.profile_picture.url }}" alt="Profile" class="rounded-circle" width="35" height="35">
+                                {% else %}
+                                    <img src="{% static 'images/360_F_724597608_pmo5BsVumFcFyHJKlASG2Y2KpkkfiYUU.jpg' %}" alt="Avatar" class="rounded-circle" width="35" height="35">
+                                {% endif %}
+                            </div>
+                            {% if comment.replies.all %}
+                                <div>
+                                    <div class="fw-semibold">{{ comment.user.username }}</div>
+                                    <i class="bi bi-calendar-event"></i> <small class="text-muted">{{ comment.created_at|date:"F d, Y" }}</small>
+                                    <p class="mt-2">{{ comment.content }}</p>
+                                
+                                </div>
+                                
+                           {%endif%} 
                         </div>
-                        <div>
-                            <div class="fw-semibold">{{ comment.user.username }}</div>
-                            <i class="bi bi-calendar-event"></i> <small class="text-muted">{{ comment.created_at|date:"F d, Y" }}</small>
-                            <p class="mt-2">{{ comment.content }}</p>
+                    </li>
+                    <!-- Show Replies -->
+                    {% for reply in comment.replies.all %}
+                    <div class="ms-5 mt-3 p-3 border-start">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                {% if reply.user.profile_picture %}
+                                    <img src="{{ reply.user.profile_picture.url }}" class="rounded-circle" width="30" height="30">
+                                {% else %}
+                                    <img src="{% static 'images/360_F_724597608_pmo5BsVumFcFyHJKlASG2Y2KpkkfiYUU.jpg' %}" class="rounded-circle" width="30" height="30">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>{{ reply.user.username }}</strong>
+                                <small class="text-muted d-block">{{ reply.created_at|date:"F d, Y H:i" }}</small>
+                                <p>{{ reply.content }}</p>
+                            </div>
                         </div>
                     </div>
-                </li>
+                    {% endfor %}
                 {% endfor %}
             </ul>
         {% else %}
@@ -76,4 +98,5 @@
     </div>
 
 </div>
+
 {% endblock %}

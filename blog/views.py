@@ -1,6 +1,7 @@
 # blog/views.py
 
 from django.views import View
+from django.views.generic import FormView
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -114,3 +115,25 @@ class MyBlogView(View):
     def get(self,request, *args, **kwargs):
         blogs = Blog.objects.filter(author=request.user).order_by('-created_at')
         return render(request, 'my_blog.html',{'blogs':blogs})
+
+class CommentReplyView(LoginRequiredMixin, FormView):
+    form_class = CommentForm
+    template_name = 'blog/comment_reply.html' 
+    success_url = '/' 
+
+    def form_valid(self, form):
+        blog = get_object_or_404(Blog, pk=self.kwargs['blog_id'])
+        parent_comment = get_object_or_404(Comment, pk=self.kwargs['parent_id'])
+
+        reply = form.save(commit=False)
+        reply.blog = blog
+        reply.user = self.request.user
+        reply.parent = parent_comment
+        reply.save()
+
+        return redirect('blog:blog_detail', pk=blog.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['blog'] = get_object_or_404(Blog, pk=self.kwargs['blog_id'])
+        return context
